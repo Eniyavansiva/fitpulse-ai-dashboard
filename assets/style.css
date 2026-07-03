@@ -1,0 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* ── Application shell ─────────────────────────────────────────────────── */
+
+:root {
+    --fp-background: {{BACKGROUND}};
+    --fp-card: {{CARD}};
+    --fp-text: {{TEXT}};
+    --fp-muted: {{MUTED}};
+    --fp-mint: {{MINT}};
+    --fp-coral: {{CORAL}};
+    --fp-purple: {{PURPLE}};
+    --fp-grid: {{GRID}};
+}
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+[data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+    background: var(--fp-background);
+}
+
+[data-testid="stMainBlockContainer"] {
+    max-width: 1540px;
+    padding-top: 1.35rem;
+    padding-bottom: 3rem;
+}
+
+#MainMenu, footer, [data-testid="stToolbar"] {
+    visibility: hidden;
+}
+
+/* ── Header and controls ───────────────────────────────────────────────── */
+
+.fitpulse-brand {
+    display: flex;
+    align-items: center;
+    min-height: 58px;
+    gap: 0.7rem;
+    color: var(--fp-text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+.fitpulse-brand-mark {
+    align-items: center;
+    background: linear-gradient(135deg, var(--fp-mint), #37d7ff);
+    border-radius: 12px;
+    color: #07120e;
+    display: inline-flex;
+    height: 37px;
+    justify-content: center;
+    width: 37px;
+}
+
+.fitpulse-brand-subtitle {
+    color: var(--fp-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin-left: 0.15rem;
+}
+
+[data-testid="stDateInput"] input,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div {
+    background: var(--fp-card) !important;
+    border: 1px solid var(--fp-grid) !important;
+    border-radius: 10px !important;
+    color: var(--fp-text) !important;
+}
+
+[data-testid="stDateInput"] label,
+[data-testid="stSelectbox"] label {
+    color: var(--fp-muted) !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.stButton > button {
+    background: var(--fp-card);
+    border: 1px solid var(--fp-grid);
+    border-radius: 10px;
+    color: var(--fp-text);
+    font-weight: 600;
+    min-height: 2.7rem;
+    transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.stButton > button:hover {
+    border-color: var(--fp-mint);
+    color: var(--fp-mint);
+    transform: translateY(-1px);
+}
+
+/* ── Typography and section cards ──────────────────────────────────────── */
+
+.fitpulse-section-title {
+    color: var(--fp-text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 2rem 0 0.15rem;
+}
+
+.fitpulse-section-copy {
+    color: var(--fp-muted);
+    font-size: 0.86rem;
+    margin-bottom: 0.75rem;
+}
+
+[data-testid="stPlotlyChart"] {
+    background: var(--fp-card);
+    border: 1px solid color-mix(in srgb, var(--fp-grid) 70%, transparent);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* ── KPI cards ─────────────────────────────────────────────────────────── */
+
+.fitpulse-kpi-card {
+    background: linear-gradient(145deg, color-mix(in srgb, var(--fp-card) 94%, var(--fp-purple)), var(--fp-card));
+    border: 1px solid var(--fp-grid);
+    border-radius: 16px;
+    box-sizing: border-box;
+    min-height: 218px;
+    overflow: hidden;
+    padding: 1rem;
+    position: relative;
+    transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.fitpulse-kpi-card:hover {
+    border-color: color-mix(in srgb, var(--fp-mint) 60%, var(--fp-grid));
+    transform: translateY(-2px);
+}
+
+.fitpulse-kpi-top {
+    align-items: center;
+    display: flex;
+    gap: 0.45rem;
+}
+
+.fitpulse-kpi-icon {
+    font-size: 1.05rem;
+}
+
+.fitpulse-kpi-title {
+    color: var(--fp-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.fitpulse-kpi-value {
+    color: var(--fp-text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    margin-top: 0.75rem;
+}
+
+.fitpulse-kpi-detail {
+    color: var(--fp-muted);
+    font-size: 0.72rem;
+    margin-top: 0.2rem;
+    min-height: 1.15rem;
+}
+
+.fitpulse-kpi-delta {
+    font-size: 0.73rem;
+    font-weight: 600;
+    margin-top: 0.65rem;
+}
+
+.fitpulse-kpi-delta.positive {
+    color: var(--fp-mint);
+}
+
+.fitpulse-kpi-delta.negative {
+    color: var(--fp-coral);
+}
+
+.fitpulse-kpi-delta.neutral {
+    color: var(--fp-muted);
+}
+
+.fitpulse-sparkline {
+    bottom: 0.85rem;
+    height: 31px;
+    left: 1rem;
+    opacity: 0.9;
+    position: absolute;
+    right: 1rem;
+    width: calc(100% - 2rem);
+}
+
+.fitpulse-no-sparkline {
+    bottom: 1.2rem;
+    color: var(--fp-muted);
+    font-size: 0.7rem;
+    left: 1rem;
+    position: absolute;
+}
+
+.fitpulse-progress-ring {
+    align-items: center;
+    animation: fitpulse-ring-fill 1.2s ease-out both;
+    background: conic-gradient(var(--ring-color) calc(var(--progress) * 1%), var(--fp-grid) 0);
+    border-radius: 50%;
+    display: flex;
+    height: 33px;
+    justify-content: center;
+    margin-left: auto;
+    position: relative;
+    width: 33px;
+}
+
+.fitpulse-progress-ring::before {
+    background: var(--fp-card);
+    border-radius: 50%;
+    content: '';
+    height: 25px;
+    position: absolute;
+    width: 25px;
+}
+
+.fitpulse-progress-ring span {
+    color: var(--fp-text);
+    font-size: 0.55rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes fitpulse-ring-fill {
+    from { transform: rotate(-90deg) scale(0.7); opacity: 0; }
+    to { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+
+/* ── Insights and footer ───────────────────────────────────────────────── */
+
+.fitpulse-insights {
+    background: linear-gradient(120deg, color-mix(in srgb, var(--fp-purple) 19%, var(--fp-card)), var(--fp-card));
+    border: 1px solid color-mix(in srgb, var(--fp-purple) 55%, var(--fp-grid));
+    border-radius: 16px;
+    padding: 1.1rem 1.3rem;
+}
+
+.fitpulse-insight-item {
+    border-bottom: 1px solid color-mix(in srgb, var(--fp-grid) 65%, transparent);
+    color: var(--fp-text);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding: 0.7rem 0;
+}
+
+.fitpulse-insight-item:last-child {
+    border-bottom: 0;
+}
+
+.fitpulse-insight-number {
+    color: var(--fp-mint);
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    margin-right: 0.55rem;
+    min-width: 1.1rem;
+}
+
+.fitpulse-footer {
+    color: var(--fp-muted);
+    font-size: 0.75rem;
+    margin-top: 2.8rem;
+    text-align: center;
+}
+
+@media (max-width: 850px) {
+    [data-testid="stMainBlockContainer"] {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+    }
+
+    .fitpulse-kpi-card {
+        min-height: 190px;
+    }
+}
+
+.fitpulse-wellness-hero {
+    align-items: center;
+    background:
+        radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--fp-mint) 22%, transparent), transparent 34%),
+        linear-gradient(135deg, color-mix(in srgb, var(--fp-card) 92%, var(--fp-mint)), var(--fp-card));
+    border: 1px solid color-mix(in srgb, var(--fp-mint) 48%, var(--fp-grid));
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.15rem;
+    min-height: 168px;
+    overflow: hidden;
+    padding: 1.3rem 1.45rem;
+}
+
+.fitpulse-wellness-eyebrow {
+    color: var(--fp-mint);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.fitpulse-wellness-title {
+    color: var(--fp-text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 0.15rem;
+}
+
+.fitpulse-wellness-subtitle,
+.fitpulse-wellness-delta {
+    color: var(--fp-muted);
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.fitpulse-wellness-score-wrap {
+    text-align: right;
+}
+
+.fitpulse-wellness-score {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 4.2rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.fitpulse-wellness-score.risk { color: #FF6B6B; }
+.fitpulse-wellness-score.watch { color: #FFC247; }
+.fitpulse-wellness-score.good { color: #7DD87D; }
+.fitpulse-wellness-score.elite { color: #00F5A0; }
+.fitpulse-wellness-score.muted { color: var(--fp-muted); }
+
+.fitpulse-rank-badge {
+    background: color-mix(in srgb, var(--fp-mint) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--fp-mint) 42%, transparent);
+    border-radius: 999px;
+    color: var(--fp-text);
+    display: inline-block;
+    font-size: 0.82rem;
+    margin-top: 0.85rem;
+    padding: 0.42rem 0.75rem;
+}
+
+.fitpulse-kpi-scroll-hint {
+    color: var(--fp-muted);
+    display: none;
+    font-size: 0.72rem;
+    margin-bottom: 0.55rem;
+}
+
+.fitpulse-leaderboard {
+    background: linear-gradient(145deg, color-mix(in srgb, var(--fp-card) 94%, var(--fp-mint)), var(--fp-card));
+    border: 1px solid var(--fp-grid);
+    border-radius: 16px;
+    overflow-x: auto;
+    padding: 0.85rem;
+}
+
+.fitpulse-leaderboard table {
+    border-collapse: collapse;
+    color: var(--fp-text);
+    font-size: 0.88rem;
+    width: 100%;
+}
+
+.fitpulse-leaderboard th {
+    color: var(--fp-muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    padding: 0.65rem 0.6rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.fitpulse-leaderboard td {
+    border-top: 1px solid color-mix(in srgb, var(--fp-grid) 70%, transparent);
+    padding: 0.78rem 0.6rem;
+}
+
+.fitpulse-leaderboard-note {
+    color: var(--fp-muted);
+    font-size: 0.76rem;
+    margin-top: 0.65rem;
+}
+
+@media (max-width: 900px) {
+    .fitpulse-wellness-hero {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .fitpulse-wellness-score-wrap {
+        text-align: left;
+    }
+
+    .fitpulse-kpi-scroll-hint {
+        display: block;
+    }
+}
