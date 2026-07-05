@@ -1,0 +1,12 @@
+fitpulse_env/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.git
+.github
+.pytest_cache/
+.streamlit/secrets.toml
+tests/
+*.md
+.DS_Store
