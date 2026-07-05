@@ -48,17 +48,35 @@ def _base_figure(title: str, theme: str, height: int = 330) -> go.Figure:
     colors = get_theme_colors(theme)
     figure = go.Figure()
     figure.update_layout(
-        title={"text": title, "font": {"size": 17, "family": "Space Grotesk, sans-serif"}},
+        title={"text": title, "font": {"size": 19, "family": "Space Grotesk, sans-serif", "color": colors["text"]}},
         height=height,
         margin={"l": 14, "r": 14, "t": 52, "b": 18},
         paper_bgcolor=colors["card"],
         plot_bgcolor=colors["card"],
         font={"family": "Inter, sans-serif", "color": colors["text"]},
         hoverlabel={"bgcolor": colors["background"], "font_color": colors["text"]},
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.02,
+            "xanchor": "right",
+            "x": 1,
+            "font": {"color": colors["text"], "size": 14},
+        },
     )
-    figure.update_xaxes(showgrid=False, zeroline=False, linecolor=colors["grid"], tickfont={"color": colors["muted"]})
-    figure.update_yaxes(gridcolor=colors["grid"], zeroline=False, tickfont={"color": colors["muted"]})
+    figure.update_xaxes(
+        showgrid=False,
+        zeroline=False,
+        linecolor=colors["grid"],
+        tickfont={"color": colors["muted"], "size": 14},
+        title_font={"color": colors["text"], "size": 15},
+    )
+    figure.update_yaxes(
+        gridcolor=colors["grid"],
+        zeroline=False,
+        tickfont={"color": colors["muted"], "size": 14},
+        title_font={"color": colors["text"], "size": 15},
+    )
     return figure
 
 
@@ -205,13 +223,14 @@ def build_segment_distribution_chart(
             marker_color=bar_colors[: len(values)],
             text=values,
             textposition="outside",
+            textfont={"color": colors["text"], "size": 15},
             cliponaxis=False,
             hovertemplate="<b>%{y}</b><br>%{x} users<extra></extra>",
         )
     )
     figure.update_layout(showlegend=False, margin={"l": 22, "r": 42, "t": 52, "b": 18})
     figure.update_xaxes(title_text="Users", dtick=1, rangemode="tozero")
-    figure.update_yaxes(categoryorder="array", categoryarray=labels[::-1], tickfont={"size": 11})
+    figure.update_yaxes(categoryorder="array", categoryarray=labels[::-1], tickfont={"color": colors["muted"], "size": 14})
     return figure
 
 

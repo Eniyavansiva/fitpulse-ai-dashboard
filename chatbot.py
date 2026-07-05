@@ -591,40 +591,35 @@ def _inject_chat_styles() -> None:
             bottom: 1.5rem;
             position: fixed;
             right: 1.5rem;
-            width: 58px;
+            width: 96px;
             z-index: 1000;
         }
         .st-key-fitpulse_chat_launcher button {
             background: #00F5A0 !important;
             border: 0 !important;
-            border-radius: 50% !important;
+            border-radius: 999px !important;
             box-shadow: 0 10px 30px rgba(0, 245, 160, 0.28);
             color: #06140f !important;
-            font-size: 1.35rem !important;
-            height: 58px !important;
-            min-height: 58px !important;
-            padding: 0 !important;
-            width: 58px !important;
+            font-size: 0.92rem !important;
+            font-weight: 800 !important;
+            height: 54px !important;
+            min-height: 54px !important;
+            padding: 0 0.9rem !important;
+            width: 96px !important;
         }
         .fitpulse-chat-panel {
-            background: #11111d;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 16px;
-            box-shadow: -14px 0 36px rgba(0,0,0,0.18);
-            min-height: calc(100vh - 2.2rem);
-            padding: 1rem;
             position: sticky;
             top: 1rem;
         }
         .fitpulse-chat-title {
-            color: #ffffff;
+            color: var(--fp-text);
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.35rem;
             font-weight: 700;
         }
         .fitpulse-chat-helper {
-            color: #a0a0b0;
-            font-size: 0.84rem;
+            color: var(--fp-muted);
+            font-size: 1.04rem;
             line-height: 1.45;
             margin: 0.4rem 0 0.8rem;
         }
@@ -635,14 +630,39 @@ def _inject_chat_styles() -> None:
         }
         [class*="st-key-fitpulse_suggestion_"] button {
             background: transparent !important;
-            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            border: 1px solid var(--fp-grid) !important;
             border-radius: 14px !important;
-            color: #ffffff !important;
-            font-size: 0.86rem !important;
+            color: var(--fp-text) !important;
+            font-size: 1.05rem !important;
+            font-weight: 700 !important;
             justify-content: flex-start !important;
             margin-top: 0.25rem !important;
             padding: 0.68rem 0.78rem !important;
             text-align: left !important;
+        }
+        [data-testid="stChatMessage"] {
+            background: color-mix(in srgb, var(--fp-card) 92%, var(--fp-background)) !important;
+            border: 1px solid var(--fp-grid) !important;
+            border-radius: 14px !important;
+            color: var(--fp-text) !important;
+            margin-bottom: 0.65rem !important;
+        }
+        [data-testid="stChatMessage"] * {
+            color: var(--fp-text) !important;
+            font-size: 1.05rem !important;
+            line-height: 1.5 !important;
+        }
+        [data-testid="stChatInput"] textarea,
+        [data-testid="stTextInput"] input {
+            background: var(--fp-card) !important;
+            border: 1px solid var(--fp-grid) !important;
+            color: var(--fp-text) !important;
+            font-size: 0.95rem !important;
+        }
+        [data-testid="stChatInput"] textarea::placeholder,
+        [data-testid="stTextInput"] input::placeholder {
+            color: var(--fp-muted) !important;
+            opacity: 1 !important;
         }
         [class*="st-key-fitpulse_suggestion_"] button:hover,
         .st-key-fitpulse_chat_send button:hover,
@@ -765,7 +785,7 @@ def render_chatbot(agent: Any, dashboard_context: dict[str, Any]) -> None:
 def render_chat_panel(agent: Any, dashboard_context: dict[str, Any]) -> None:
     """Render the right-side chat panel with message history fixed and input visible."""
     _inject_chat_styles()
-    st.markdown("<div class='fitpulse-chat-panel'>", unsafe_allow_html=True)
+    st.markdown("<div class='fitpulse-chat-panel'></div>", unsafe_allow_html=True)
     header_column, close_column = st.columns([5, 1], vertical_alignment="center")
     with header_column:
         st.markdown("<div class='fitpulse-chat-title'>Ask FitPulse AI</div>", unsafe_allow_html=True)
@@ -800,4 +820,13 @@ def render_chat_panel(agent: Any, dashboard_context: dict[str, Any]) -> None:
     if prompt:
         _submit_chat_prompt(agent, dashboard_context, prompt)
         st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+
+
+def render_chat_launcher() -> None:
+    """Render the always-available fixed chat launcher."""
+    if "chat_open" not in st.session_state:
+        st.session_state.chat_open = False
+    _inject_chat_styles()
+    if st.button("AI Chat", key="fitpulse_chat_launcher", help="Ask FitPulse AI"):
+        st.session_state.chat_open = True
+        st.rerun()

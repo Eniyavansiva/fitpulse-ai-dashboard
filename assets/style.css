@@ -15,14 +15,32 @@
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
+    color: var(--fp-text);
 }
 
 [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
     background: var(--fp-background);
 }
 
+[data-testid="stMarkdownContainer"],
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stCaptionContainer"],
+[data-testid="stWidgetLabel"],
+[data-testid="stMetric"],
+[data-testid="stMetric"] * {
+    color: var(--fp-text) !important;
+}
+
+[data-testid="stCaptionContainer"],
+[data-testid="stMarkdownContainer"] small {
+    color: var(--fp-muted) !important;
+    font-size: 0.9rem !important;
+}
+
 [data-testid="stMainBlockContainer"] {
-    max-width: 1540px;
+    max-width: 100%;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
     padding-top: 1.35rem;
     padding-bottom: 3rem;
 }
@@ -40,7 +58,7 @@ html, body, [class*="css"] {
     gap: 0.7rem;
     color: var(--fp-text);
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.45rem;
+    font-size: 1.65rem;
     font-weight: 700;
     letter-spacing: -0.04em;
 }
@@ -59,7 +77,7 @@ html, body, [class*="css"] {
 .fitpulse-brand-subtitle {
     color: var(--fp-muted);
     font-family: 'Inter', sans-serif;
-    font-size: 0.76rem;
+    font-size: 0.86rem;
     font-weight: 500;
     letter-spacing: 0.01em;
     margin-left: 0.15rem;
@@ -70,6 +88,11 @@ html, body, [class*="css"] {
     background: var(--fp-card) !important;
     border: 1px solid var(--fp-grid) !important;
     border-radius: 10px !important;
+    color: var(--fp-text) !important;
+    font-size: 0.95rem !important;
+}
+
+[data-testid="stSelectbox"] [data-baseweb="select"] * {
     color: var(--fp-text) !important;
 }
 
@@ -88,6 +111,7 @@ html, body, [class*="css"] {
     border-radius: 10px;
     color: var(--fp-text);
     font-weight: 600;
+    font-size: 0.95rem;
     min-height: 2.7rem;
     transition: border-color 160ms ease, transform 160ms ease;
 }
@@ -103,7 +127,7 @@ html, body, [class*="css"] {
 .fitpulse-section-title {
     color: var(--fp-text);
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.35rem;
     font-weight: 600;
     letter-spacing: -0.02em;
     margin: 2rem 0 0.15rem;
@@ -111,7 +135,7 @@ html, body, [class*="css"] {
 
 .fitpulse-section-copy {
     color: var(--fp-muted);
-    font-size: 0.86rem;
+    font-size: 0.98rem;
     margin-bottom: 0.75rem;
 }
 
@@ -120,6 +144,15 @@ html, body, [class*="css"] {
     border: 1px solid color-mix(in srgb, var(--fp-grid) 70%, transparent);
     border-radius: 16px;
     overflow: hidden;
+}
+
+[data-testid="stPlotlyChart"] text {
+    fill: var(--fp-text) !important;
+}
+
+[data-testid="stPlotlyChart"] .xtick text,
+[data-testid="stPlotlyChart"] .ytick text {
+    fill: var(--fp-muted) !important;
 }
 
 /* ── KPI cards ─────────────────────────────────────────────────────────── */
@@ -153,7 +186,7 @@ html, body, [class*="css"] {
 
 .fitpulse-kpi-title {
     color: var(--fp-muted);
-    font-size: 0.75rem;
+    font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -162,7 +195,7 @@ html, body, [class*="css"] {
 .fitpulse-kpi-value {
     color: var(--fp-text);
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.55rem;
+    font-size: 1.85rem;
     font-weight: 700;
     letter-spacing: -0.05em;
     margin-top: 0.75rem;
@@ -170,13 +203,15 @@ html, body, [class*="css"] {
 
 .fitpulse-kpi-detail {
     color: var(--fp-muted);
-    font-size: 0.72rem;
+    font-size: 0.98rem;
+    font-weight: 500;
+    line-height: 1.35;
     margin-top: 0.2rem;
     min-height: 1.15rem;
 }
 
 .fitpulse-kpi-delta {
-    font-size: 0.73rem;
+    font-size: 0.95rem;
     font-weight: 600;
     margin-top: 0.65rem;
 }
@@ -401,13 +436,13 @@ html, body, [class*="css"] {
 .fitpulse-leaderboard table {
     border-collapse: collapse;
     color: var(--fp-text);
-    font-size: 0.88rem;
+    font-size: 1.02rem;
     width: 100%;
 }
 
 .fitpulse-leaderboard th {
     color: var(--fp-muted);
-    font-size: 0.72rem;
+    font-size: 0.88rem;
     letter-spacing: 0.04em;
     padding: 0.65rem 0.6rem;
     text-align: left;
@@ -421,7 +456,7 @@ html, body, [class*="css"] {
 
 .fitpulse-leaderboard-note {
     color: var(--fp-muted);
-    font-size: 0.76rem;
+    font-size: 0.92rem;
     margin-top: 0.65rem;
 }
 
