@@ -169,6 +169,19 @@ def _section_heading(title: str, description: str) -> None:
     st.markdown(f"<div class='fitpulse-section-copy'>{description}</div>", unsafe_allow_html=True)
 
 
+def render_no_data_card(message: str) -> None:
+    """Render a clean styled card when no data is available for the selected user."""
+    st.markdown(
+        f"""
+        <div class="fitpulse-no-data-card">
+            <div class="fitpulse-no-data-icon">📭</div>
+            <div>{escape(message)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def _format_metric_number(value: float | int | None, decimals: int = 0, suffix: str = "") -> str:
     """Format a metric value for custom dashboard cards."""
     if value is None or pd.isna(value):
@@ -343,6 +356,13 @@ def _render_kpi_cards(
     if selected_user == ALL_USERS_OPTION:
         kpis = [kpi for kpi in kpis if kpi["key"] != "bmi"]
         kpis.append(_build_wellness_kpi(wellness_snapshot))
+    else:
+        for kpi in kpis:
+            if kpi["key"] == "bmi" and kpi["value"] is None:
+                kpi["title"] = "Weight / BMI"
+                kpi["value_label"] = "Not logged"
+                kpi["detail"] = "No source weight records for this user"
+                kpi["delta_label"] = "Heart-rate data is separate"
     kpis.append(_build_streak_kpi(performance_summary, selected_user))
     st.markdown("<div class='fitpulse-kpi-scroll-hint'>Swipe horizontally on smaller screens to see all seven cards.</div>", unsafe_allow_html=True)
     for column, kpi in zip(st.columns(7, gap="small"), kpis):
@@ -484,6 +504,9 @@ def _render_sleep_section(filtered_data: dict[str, pd.DataFrame]) -> None:
 def _render_heartrate_section(filtered_data: dict[str, pd.DataFrame]) -> None:
     """Render the full-width heart-rate timeline and training zones."""
     _section_heading("Heart rate analysis", "Minute-level readings cleaned into an hourly signal and mapped to intensity zones.")
+    if filtered_data["heartrate"].empty:
+        render_no_data_card("No heart rate data recorded for this user.")
+        return
     st.plotly_chart(build_heartrate_chart(filtered_data["heartrate"], st.session_state.theme), width="stretch", config=PLOTLY_CONFIG)
 
 
@@ -491,8 +514,16 @@ def _render_weight_section(filtered_data: dict[str, pd.DataFrame]) -> None:
     """Render weight and BMI visualizations with a user-adjustable reference goal."""
     _section_heading("Weight & BMI trends", "Track your recorded measurements against a reference target.")
     weight_data = filtered_data["weight"]
+    has_weight = not weight_data.empty and weight_data["WeightKg"].dropna().any()
+    has_bmi = not weight_data.empty and weight_data["BMI"].dropna().any()
+    if not has_weight and not has_bmi:
+        render_no_data_card(
+            "No weight or BMI records were logged for this user in the source Fitbit files. "
+            "Heart-rate data can still appear because it comes from a separate heart-rate file."
+        )
+        return
     default_goal = 70.0
-    if not weight_data.empty and weight_data["WeightKg"].notna().any():
+    if has_weight:
         weight_date_column = "MeasurementDate" if "MeasurementDate" in weight_data else "Date"
         daily_weight = (
             weight_data.dropna(subset=[weight_date_column, "WeightKg"])
@@ -506,16 +537,22 @@ def _render_weight_section(filtered_data: dict[str, pd.DataFrame]) -> None:
         st.session_state[goal_key] = default_goal
     weight_column, bmi_column = st.columns(2, gap="medium")
     with weight_column:
-        goal_weight = st.number_input(
-            "Reference goal (kg)",
-            min_value=20.0,
-            max_value=300.0,
-            step=0.5,
-            key=goal_key,
-        )
-        st.plotly_chart(build_weight_trend_chart(weight_data, st.session_state.theme, goal_weight), width="stretch", config=PLOTLY_CONFIG)
+        if not has_weight:
+            render_no_data_card("No weight data recorded for this user.")
+        else:
+            goal_weight = st.number_input(
+                "Reference goal (kg)",
+                min_value=20.0,
+                max_value=300.0,
+                step=0.5,
+                key=goal_key,
+            )
+            st.plotly_chart(build_weight_trend_chart(weight_data, st.session_state.theme, goal_weight), width="stretch", config=PLOTLY_CONFIG)
     with bmi_column:
-        st.plotly_chart(build_bmi_indicator(weight_data, st.session_state.theme), width="stretch", config=PLOTLY_CONFIG)
+        if not has_bmi:
+            render_no_data_card("No BMI data recorded for this user.")
+        else:
+            st.plotly_chart(build_bmi_indicator(weight_data, st.session_state.theme), width="stretch", config=PLOTLY_CONFIG)
 
 
 def _build_ai_insight_inputs(
