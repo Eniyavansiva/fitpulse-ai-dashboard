@@ -61,6 +61,30 @@ def get_data_path(filename: str) -> str:
     return os.path.join(DATA_DIRECTORY, filename)
 
 
+def get_user_filtered(
+    dataframe: pd.DataFrame,
+    user_id: str | int,
+    date_column: str,
+    start_date: pd.Timestamp | None = None,
+    end_date: pd.Timestamp | None = None,
+) -> pd.DataFrame | None:
+    """Filter a user's records, falling back to all user dates if a date window removes them."""
+    if dataframe.empty or "Id" not in dataframe:
+        return None
+    user_data = dataframe.loc[dataframe["Id"].astype(str) == str(user_id)].copy()
+    if user_data.empty:
+        return None
+    if start_date is None or end_date is None or date_column not in user_data:
+        return user_data
+
+    date_values = pd.to_datetime(user_data[date_column], errors="coerce")
+    date_filtered = user_data.loc[
+        (date_values >= pd.Timestamp(start_date))
+        & (date_values <= pd.Timestamp(end_date))
+    ].copy()
+    return date_filtered if not date_filtered.empty else user_data
+
+
 def _read_csv(filename: str, **read_csv_options: object) -> pd.DataFrame:
     """Read one CSV file and raise a descriptive error when it is unavailable or invalid."""
     file_path = get_data_path(filename)

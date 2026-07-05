@@ -760,3 +760,44 @@ def render_chatbot(agent: Any, dashboard_context: dict[str, Any]) -> None:
     render_chat_launcher()
     if st.session_state.get("chat_open", False):
         render_chat_panel(agent, dashboard_context)
+
+
+def render_chat_panel(agent: Any, dashboard_context: dict[str, Any]) -> None:
+    """Render the right-side chat panel with message history fixed and input visible."""
+    _inject_chat_styles()
+    st.markdown("<div class='fitpulse-chat-panel'>", unsafe_allow_html=True)
+    header_column, close_column = st.columns([5, 1], vertical_alignment="center")
+    with header_column:
+        st.markdown("<div class='fitpulse-chat-title'>Ask FitPulse AI</div>", unsafe_allow_html=True)
+    with close_column:
+        if st.button("x", key="fitpulse_chat_close", help="Close chat"):
+            st.session_state.chat_open = False
+            st.rerun()
+
+    scope = "the all-users cohort" if dashboard_context["is_all_users"] else dashboard_context["user_name"]
+    st.markdown(
+        f"<div class='fitpulse-chat-helper'>Ask about {escape(str(scope))}. Answers are grounded in the metrics currently visible on this dashboard.</div>",
+        unsafe_allow_html=True,
+    )
+
+    with st.container(height=360, border=False):
+        for item in st.session_state.chat_history:
+            with st.chat_message(item["role"]):
+                st.markdown(item["content"])
+
+    if not st.session_state.chat_history:
+        st.markdown("**Not sure what to ask?**")
+        for index, question in enumerate(
+            get_suggested_questions(dashboard_context["chat_kpis"], dashboard_context["is_all_users"])
+        ):
+            if st.button(question, key=f"fitpulse_suggestion_{index}", width="stretch"):
+                st.session_state.pending_input = question
+                st.rerun()
+
+    prompt = st.chat_input("Ask about steps, sleep, calories, or trends", key="fitpulse_chat_input_v2")
+    if "pending_input" in st.session_state:
+        prompt = st.session_state.pop("pending_input")
+    if prompt:
+        _submit_chat_prompt(agent, dashboard_context, prompt)
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
